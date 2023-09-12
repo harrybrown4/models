@@ -1,0 +1,144 @@
+Sub CalculateInsuranceRiskAfterCrash()
+    Dim ws As Worksheet
+    Dim LastRow As Long
+    Dim Age As Integer
+    Dim Gender As String
+    Dim PastClaims As Integer
+    Dim BasePremium As Double
+    Dim DrivingExperience As Integer
+    Dim Location As String
+    Dim Speed As Integer
+    Dim RoadType As String
+    Dim TimeOfDay As String
+    Dim CarType As String
+    Dim AnnualMileage As Integer
+    Dim DriverEducation As String
+    Dim DrivingHistory As String
+    Dim SafetyFeatures As String
+    Dim InjuryHistory As String
+    Dim BAC As Double
+    Dim AlcoholConsumption As String
+    Dim DrugUse As String
+    Dim Fatigue As String
+    Dim Distractions As String
+    Dim MedicalConditions As String
+    Dim MentalHealthConditions As String
+    Dim RiskFactor As Double
+    Dim PremiumWithRiskAfterCrash As Double
+    
+    Set ws = ThisWorkbook.Sheets("Sheet1")
+    LastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+    
+    For i = 2 To LastRow
+        Age = ws.Cells(i, 2).Value
+        Gender = ws.Cells(i, 3).Value
+        PastClaims = ws.Cells(i, 4).Value
+        BasePremium = ws.Cells(i, 5).Value
+        DrivingExperience = ws.Cells(i, 6).Value
+        Location = ws.Cells(i, 7).Value
+        Speed = ws.Cells(i, 8).Value
+        RoadType = ws.Cells(i, 9).Value
+        TimeOfDay = ws.Cells(i, 10).Value
+        CarType = ws.Cells(i, 11).Value
+        AnnualMileage = ws.Cells(i, 12).Value
+        DriverEducation = ws.Cells(i, 13).Value
+        DrivingHistory = ws.Cells(i, 14).Value
+        SafetyFeatures = ws.Cells(i, 15).Value
+        InjuryHistory = ws.Cells(i, 16).Value
+        BAC = ws.Cells(i, 17).Value
+        AlcoholConsumption = ws.Cells(i, 18).Value
+        DrugUse = ws.Cells(i, 19).Value
+        Fatigue = ws.Cells(i, 20).Value
+        Distractions = ws.Cells(i, 21).Value
+        MedicalConditions = ws.Cells(i, 22).Value
+        MentalHealthConditions = ws.Cells(i, 23).Value
+        RiskFactor = 1
+        
+        If Age < 25 Then
+            RiskFactor = RiskFactor + 0.2
+        End If
+        
+        If Gender = "M" Then
+            RiskFactor = RiskFactor + 0.1
+        End If
+        
+        If DrivingExperience < 5 Then
+            RiskFactor = RiskFactor + 0.15
+        End If
+        
+        Select Case Location
+            Case "Urban"
+                RiskFactor = RiskFactor + 0.3
+            Case "Suburban"
+                RiskFactor = RiskFactor + 0.2
+            Case "Rural"
+                RiskFactor = RiskFactor + 0.1
+        End Select
+        
+        If Speed > 75 Then
+            RiskFactor = RiskFactor + 0.2
+        End If
+        
+        Select Case RoadType
+            Case "Highway"
+                RiskFactor = RiskFactor + 0.1
+            Case "City"
+                RiskFactor = RiskFactor + 0.2
+            Case "Rural"
+                RiskFactor = RiskFactor + 0.1
+        End Select
+        
+        Select Case TimeOfDay
+            Case "Morning"
+                RiskFactor = RiskFactor + 0.1
+            Case "Afternoon"
+                RiskFactor = RiskFactor + 0.2
+            Case "Evening"
+                RiskFactor = RiskFactor + 0.3
+        End Select
+        
+        If BAC > 0.05 Then
+            RiskFactor = RiskFactor + 0.3
+        End If
+        
+        If Fatigue = "Yes" Then
+            RiskFactor = RiskFactor + 0.2
+        End If
+        
+        If Distractions = "Yes" Then
+            RiskFactor = RiskFactor + 0.2
+        End If
+        
+        If MedicalConditions = "Yes" Then
+            RiskFactor = RiskFactor + 0.3
+        End If
+        
+        If MentalHealthConditions = "Yes" Then
+            RiskFactor = RiskFactor + 0.3
+        End If
+        
+        Dim OriginalTrafficViolations As Integer
+        OriginalTrafficViolations = ws.Cells(i, 26).Value
+        
+        PremiumWithRiskAfterCrash = BasePremium * RiskFactor
+        
+        ws.Cells(i, 26).Value = RiskFactor
+        ws.Cells(i, 27).Value = PremiumWithRiskAfterCrash
+        
+        Dim VehicleSafetyRating As String
+        VehicleSafetyRating = ws.Cells(i, 25).Value
+        
+        If VehicleSafetyRating = "Good" Then
+            RiskFactor = RiskFactor - 0.1
+        ElseIf VehicleSafetyRating = "Poor" Then
+            RiskFactor = RiskFactor + 0.2
+        End If
+        
+        ws.Cells(i, 26).Value = OriginalTrafficViolations
+        
+        PremiumWithRiskAfterCrash = BasePremium * RiskFactor
+        
+        ws.Cells(i, 27).Value = RiskFactor
+        ws.Cells(i, 28).Value = PremiumWithRiskAfterCrash
+    Next i
+End Sub
